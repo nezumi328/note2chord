@@ -13,11 +13,16 @@ function textColorForBg(hex: string): string {
   const r = parseInt(hex.slice(0, 2), 16);
   const g = parseInt(hex.slice(2, 4), 16);
   const b = parseInt(hex.slice(4, 6), 16);
-  // white bg → dark text
   if (r > 200 && g > 200 && b > 200) return "#111";
-  // very dark → light text
   if (r < 20 && g < 20 && b < 20) return "#aaa";
   return "#fff";
+}
+
+function complementColor(hex: string): string {
+  const r = (255 - parseInt(hex.slice(0, 2), 16)).toString(16).padStart(2, "0");
+  const g = (255 - parseInt(hex.slice(2, 4), 16)).toString(16).padStart(2, "0");
+  const b = (255 - parseInt(hex.slice(4, 6), 16)).toString(16).padStart(2, "0");
+  return `#${r}${g}${b}`;
 }
 
 interface ChordGridProps {
@@ -70,6 +75,7 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
                 const diatonicLabel = keyRoot
                   ? getDiatonicLabel(chord.root, chord.suffix, keyRoot, keyMode)
                   : null;
+                const badgeColor = diatonicLabel ? complementColor(chord.color) : null;
                 return (
                   <td key={root} className="p-0.5">
                     <div
@@ -80,7 +86,7 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
                       style={{
                         backgroundColor: `#${chord.color}`,
                         // 案B: ダイアトニックに色付きボーダー
-                        outline: diatonicLabel ? "2px solid #f97316" : "none",
+                        outline: badgeColor ? `2px solid ${badgeColor}` : "none",
                         outlineOffset: "-1px",
                       }}
                       onClick={() => playChord(chord.audioFile)}
@@ -90,7 +96,7 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
                       {diatonicLabel && (
                         <span
                           className="absolute top-0.5 right-0.5 text-[9px] font-bold leading-none"
-                          style={{ color: "#f97316" }}
+                          style={{ color: badgeColor ?? "#f97316" }}
                         >
                           {diatonicLabel}
                         </span>
