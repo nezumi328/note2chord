@@ -2,53 +2,86 @@
 
 import { useEffect, useRef, useState } from "react";
 import { NoteName } from "@/lib/chordEngine";
+import { audioEngine } from "@/lib/audioEngine";
 
-const INTERVAL_MS = 700;
+const NOTE_INTERVAL = 0.7;       // seconds between notes
+const LOOKAHEAD = 0.15;          // schedule this many seconds ahead
+const SCHEDULER_TICK_MS = 30;    // how often to run the scheduler (ms)
 
 export function useArpeggio(notes: NoteName[]) {
   const [playing, setPlaying] = useState(false);
-  const indexRef = useRef(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const notesRef = useRef<NoteName[]>([]);
+  const buffersRef = useRef<(AudioBuffer | null)[]>([]);
+  const indexRef = useRef(0);
+  const nextTimeRef = useRef(0);
+  const tickerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const playingRef = useRef(false);
 
   notesRef.current = notes;
 
-  function playNext() {
-    const queue = notesRef.current;
-    if (queue.length === 0) return;
-    indexRef.current = indexRef.current % queue.length;
-    const note = queue[indexRef.current];
-    new Audio(`/audio/${note}4.mp3`).play().catch(() => {});
-    indexRef.current = (indexRef.current + 1) % queue.length;
+  // Preload buffers whenever selected notes change
+  useEffect(() => {
+    if (notes.length === 0) return;
+    Promise.all(
+      notes.map(n => audioEngine.load(`/audio/${n}4.mp3`).catch(() => null))
+    ).then(bufs => {
+      buffersRef.current = bufs;
+    });
+  }, [notes.join(",")]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  function schedule() {
+    const bufs = buffersRef.current;
+    const len = notesRef.current.length;
+    if (!len || !bufs.length) return;
+
+    const now = audioEngine.currentTime;
+    while (nextTimeRef.current < now + LOOKAHEAD) {
+      const idx = indexRef.current % len;
+      const buf = bufs[idx];
+      if (buf) audioEngine.schedulePlay(buf, nextTimeRef.current);
+      nextTimeRef.current += NOTE_INTERVAL;
+      indexRef.current = (indexRef.current + 1) % len;
+    }
   }
 
   function start() {
-    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (tickerRef.current) clearInterval(tickerRef.current);
     indexRef.current = 0;
-    playNext();
-    intervalRef.current = setInterval(playNext, INTERVAL_MS);
-    setPlaying(true);
+    // Initialize nextTime slightly ahead so first note plays immediately
+    audioEngine.ensureStarted().then(() => {
+      nextTimeRef.current = audioEngine.currentTime + 0.05;
+      schedule();
+      tickerRef.current = setInterval(schedule, SCHEDULER_TICK_MS);
+      playingRef.current = true;
+      setPlaying(true);
+    });
   }
 
   function stop() {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+    if (tickerRef.current) {
+      clearInterval(tickerRef.current);
+      tickerRef.current = null;
     }
+    playingRef.current = false;
     setPlaying(false);
   }
 
-  // 音が変わったら再生中なら再スタート、止まっていたら自動再生開始
+  // Restart loop when notes change (if already playing)
   useEffect(() => {
     if (notes.length === 0) {
       stop();
       return;
     }
-    start();
+    // Re-preload then restart
+    Promise.all(
+      notes.map(n => audioEngine.load(`/audio/${n}4.mp3`).catch(() => null))
+    ).then(bufs => {
+      buffersRef.current = bufs;
+      start();
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes.join(",")]);
 
-  // アンマウント時クリーンアップ
   useEffect(() => () => stop(), []);
 
   return { playing, stop, start };

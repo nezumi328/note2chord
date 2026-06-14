@@ -1,10 +1,11 @@
 "use client";
 
+import { memo } from "react";
 import { ChordResult } from "@/lib/chordEngine";
+import { audioEngine } from "@/lib/audioEngine";
 
 function playChord(audioFile: string) {
-  const audio = new Audio(`/${audioFile}`);
-  audio.play().catch(() => {});
+  audioEngine.play(`/${audioFile}`).catch(() => {});
 }
 
 function textColorForBg(hex: string): string {
@@ -25,7 +26,7 @@ interface ChordGridProps {
 const SUFFIX_ORDER = ["M","M7","7","6","m","mM7","m7","m6","m7-5","dim","aug","augM7","7-5","7sus4"];
 const ROOT_ORDER = ["C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"];
 
-export default function ChordGrid({ chords }: ChordGridProps) {
+export default memo(function ChordGrid({ chords }: ChordGridProps) {
   if (chords.length === 0) {
     return (
       <p className="text-center mt-8" style={{ color: "var(--text-muted)" }}>
@@ -132,4 +133,4 @@ export default function ChordGrid({ chords }: ChordGridProps) {
       </div>
     </div>
   );
-}
+});
