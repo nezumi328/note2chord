@@ -95,6 +95,16 @@ export default function Home() {
       <section className="p-4 rounded-xl" style={{ background: "var(--surface)" }}>
         <ChordGrid chords={chords} keyRoot={keyRoot} keyMode={keyMode} />
       </section>
+
+      <footer className="mt-8 flex justify-center">
+        <a
+          href="https://www.youtube.com/user/up80k"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src="/banner.png" alt="Music Studio レ" style={{ height: 50, width: "auto" }} />
+        </a>
+      </footer>
     </main>
   );
 }
