@@ -75,14 +75,14 @@ export default function Home() {
         </div>
       </section>
 
+      <p className="my-3 text-center text-xs" style={{ color: "var(--text-muted)" }}>
+        ⚠️ 鍵盤やコードネームをクリックすると音が出ます。音量にご注意ください。
+        <span className="block mt-0.5" style={{ opacity: 0.7 }}>Clicking the keyboard or a chord name plays audio — please watch your volume.</span>
+      </p>
+
       <section className="p-4 rounded-xl" style={{ background: "var(--surface)" }}>
         <ChordGrid chords={chords} />
       </section>
-
-      <footer className="mt-8 text-center" style={{ fontSize: 10, color: "var(--text-muted)" }}>
-        コードネームをクリックすると音が出ます &nbsp;·&nbsp; 音量にご注意ください
-        <span className="block mt-0.5" style={{ opacity: 0.6 }}>Click a chord name to hear it &nbsp;·&nbsp; Please watch your volume</span>
-      </footer>
     </main>
   );
 }
