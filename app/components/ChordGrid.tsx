@@ -18,11 +18,13 @@ function textColorForBg(hex: string): string {
   return "#fff";
 }
 
-function complementColor(hex: string): string {
-  const r = (255 - parseInt(hex.slice(0, 2), 16)).toString(16).padStart(2, "0");
-  const g = (255 - parseInt(hex.slice(2, 4), 16)).toString(16).padStart(2, "0");
-  const b = (255 - parseInt(hex.slice(4, 6), 16)).toString(16).padStart(2, "0");
-  return `#${r}${g}${b}`;
+function badgeColorForBg(hex: string): string {
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  // 赤系セル（赤が支配的）→ イエロー
+  if (r > 150 && g < 100 && b < 100) return "#ffdd00";
+  return "#f97316";
 }
 
 interface ChordGridProps {
@@ -75,7 +77,7 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
                 const diatonicLabel = keyRoot
                   ? getDiatonicLabel(chord.root, chord.suffix, keyRoot, keyMode)
                   : null;
-                const badgeColor = diatonicLabel ? complementColor(chord.color) : null;
+                const badgeColor = diatonicLabel ? badgeColorForBg(chord.color) : null;
                 return (
                   <td key={root} className="p-0.5">
                     <div
