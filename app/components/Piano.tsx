@@ -1,6 +1,7 @@
 "use client";
 
 import { NoteName } from "@/lib/chordEngine";
+import { audioEngine } from "@/lib/audioEngine";
 
 const WHITE_KEYS: NoteName[] = ["C","D","E","F","G","A","B"];
 const BLACK_KEYS: { note: NoteName; offset: number }[] = [
@@ -18,6 +19,7 @@ interface PianoProps {
 
 export default function Piano({ selected, onToggle }: PianoProps) {
   const handleKey = (note: NoteName) => {
+    audioEngine.play(`/audio/${note}4.mp3`).catch(() => {});
     onToggle(note);
   };
 
