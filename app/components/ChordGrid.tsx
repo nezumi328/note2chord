@@ -1,8 +1,9 @@
 "use client";
 
 import { memo } from "react";
-import { ChordResult } from "@/lib/chordEngine";
+import { ChordResult, NoteName } from "@/lib/chordEngine";
 import { audioEngine } from "@/lib/audioEngine";
+import { getDiatonicLabel, Mode } from "@/lib/keyFunction";
 
 function playChord(audioFile: string) {
   audioEngine.play(`/${audioFile}`).catch(() => {});
@@ -21,12 +22,14 @@ function textColorForBg(hex: string): string {
 
 interface ChordGridProps {
   chords: ChordResult[];
+  keyRoot: NoteName | null;
+  keyMode: Mode;
 }
 
 const SUFFIX_ORDER = ["M","M7","7","6","m","mM7","m7","m6","m7-5","dim","aug","augM7","7-5","7sus4"];
 const ROOT_ORDER = ["C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"];
 
-export default memo(function ChordGrid({ chords }: ChordGridProps) {
+export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridProps) {
   if (chords.length === 0) {
     return (
       <p className="text-center mt-8" style={{ color: "var(--text-muted)" }}>
@@ -64,17 +67,29 @@ export default memo(function ChordGrid({ chords }: ChordGridProps) {
                 if (!chord) return <td key={root} />;
                 const isWhite = chord.color === "ffffff";
                 const textColor = textColorForBg(chord.color);
+                const diatonicLabel = keyRoot
+                  ? getDiatonicLabel(chord.root, chord.suffix, keyRoot, keyMode)
+                  : null;
                 return (
                   <td key={root} className="p-0.5">
                     <div
                       className={`
-                        group relative cursor-pointer rounded text-center py-1 px-0.5 transition-opacity
+                        group relative cursor-pointer rounded text-center px-0.5 transition-opacity
                         ${isWhite ? "opacity-10 hover:opacity-30" : "hover:opacity-80"}
+                        ${diatonicLabel ? "py-0.5" : "py-1"}
                       `}
                       style={{ backgroundColor: `#${chord.color}` }}
                       onClick={() => playChord(chord.audioFile)}
                       title={chord.tensions.join(", ")}
                     >
+                      {diatonicLabel && (
+                        <div
+                          className="text-[7px] leading-none mb-0.5 font-bold tracking-tight"
+                          style={{ color: textColor, opacity: 0.75 }}
+                        >
+                          {diatonicLabel}
+                        </div>
+                      )}
                       <span className="font-bold text-[11px] leading-none" style={{ color: textColor }}>
                         {chord.displayName}
                       </span>

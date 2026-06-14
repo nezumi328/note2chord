@@ -3,13 +3,17 @@
 import { useState, useMemo } from "react";
 import Piano from "./components/Piano";
 import ChordGrid from "./components/ChordGrid";
+import KeySelector from "./components/KeySelector";
 import { suggestChords, NoteName } from "@/lib/chordEngine";
 import { useArpeggio } from "./hooks/useArpeggio";
+import { Mode } from "@/lib/keyFunction";
 
 export default function Home() {
   const [selected, setSelected] = useState<Set<NoteName>>(new Set());
   const notes = useMemo(() => [...selected] as NoteName[], [selected]);
   const { playing, stop, start } = useArpeggio(notes);
+  const [keyRoot, setKeyRoot] = useState<NoteName | null>(null);
+  const [keyMode, setKeyMode] = useState<Mode>("major");
 
   const toggle = (note: NoteName) => {
     setSelected(prev => {
@@ -40,6 +44,14 @@ export default function Home() {
       </header>
 
       <section className="mb-6 p-4 rounded-xl" style={{ background: "var(--surface)" }}>
+        <div className="mb-3">
+          <KeySelector
+            keyRoot={keyRoot}
+            mode={keyMode}
+            onKeyChange={setKeyRoot}
+            onModeChange={setKeyMode}
+          />
+        </div>
         <Piano selected={selected} onToggle={toggle} />
 
         <div className="mt-4 flex items-center justify-between">
@@ -81,7 +93,7 @@ export default function Home() {
       </p>
 
       <section className="p-4 rounded-xl" style={{ background: "var(--surface)" }}>
-        <ChordGrid chords={chords} />
+        <ChordGrid chords={chords} keyRoot={keyRoot} keyMode={keyMode} />
       </section>
     </main>
   );
