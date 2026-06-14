@@ -63,11 +63,12 @@ function getTensionMap(suffix: string): Record<number, string> {
 }
 
 function toAudioFilename(root: NoteName, suffix: string): string {
-  let s = suffix;
-  if (s === "M") s = "";
-  let name = root + s;
-  name = name.replace("mM7","minM7").replace("m7-5","min7-5").replace("m7","min7").replace("m6","min6").replace("m","min");
-  return `audio/${name}.mp3`;
+  const suffixMap: Record<string, string> = {
+    "M": "", "M7": "M7", "7": "7", "6": "6",
+    "m": "min", "mM7": "minM7", "m7": "min7", "m6": "min6", "m7-5": "min7-5",
+    "dim": "dim", "aug": "aug", "augM7": "augM7", "7-5": "7-5", "7sus4": "7sus4",
+  };
+  return `audio/${root}${suffixMap[suffix] ?? suffix}.mp3`;
 }
 
 function calcColor(
