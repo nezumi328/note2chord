@@ -55,14 +55,7 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-xs">
-        <thead>
-          <tr>
-            <th className="text-left px-2 py-1 text-[var(--text-muted)] font-normal w-16">type</th>
-            {ROOT_ORDER.map(r => (
-              <th key={r} className="text-center px-1 py-1 text-[var(--text-muted)] font-normal">{r}</th>
-            ))}
-          </tr>
-        </thead>
+        <thead></thead>
         <tbody>
           {SUFFIX_ORDER.map(suffix => (
             <tr key={suffix}>

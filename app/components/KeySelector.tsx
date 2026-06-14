@@ -25,7 +25,7 @@ export default function KeySelector({ keyRoot, mode, onKeyChange, onModeChange }
   return (
     <div className="flex items-center gap-2 flex-wrap">
       <span className="text-xs font-semibold" style={{ color: "var(--text-muted)" }}>
-        Key filter
+        Key highlight
       </span>
       <select
         style={selectStyle}
