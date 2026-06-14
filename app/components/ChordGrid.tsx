@@ -13,8 +13,8 @@ function textColorForBg(hex: string): string {
   const b = parseInt(hex.slice(4, 6), 16);
   // white bg → dark text
   if (r > 200 && g > 200 && b > 200) return "#111";
-  // very dark → muted text
-  if (r < 20 && g < 20 && b < 20) return "#666";
+  // very dark → light text
+  if (r < 20 && g < 20 && b < 20) return "#aaa";
   return "#fff";
 }
 

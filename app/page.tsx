@@ -54,9 +54,9 @@ export default function Home() {
                 onClick={playing ? stop : start}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
                 style={{
-                  background: playing ? "#3a1a1a" : "#1a2a1a",
-                  color: playing ? "#ff6b6b" : "#6bff6b",
-                  border: `1px solid ${playing ? "#ff6b6b44" : "#6bff6b44"}`,
+                  background: playing ? "#fff0f0" : "#f0fff0",
+                  color: playing ? "#cc2222" : "#227722",
+                  border: `1px solid ${playing ? "#cc222244" : "#22772244"}`,
                 }}
               >
                 {playing ? "■ Stop arpeggio　停止" : "▶ Play arpeggio　再生"}
