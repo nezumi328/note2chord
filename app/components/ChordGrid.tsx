@@ -28,8 +28,9 @@ const ROOT_ORDER = ["C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"];
 export default function ChordGrid({ chords }: ChordGridProps) {
   if (chords.length === 0) {
     return (
-      <p className="text-center text-[var(--text-muted)] mt-8">
+      <p className="text-center mt-8" style={{ color: "var(--text-muted)" }}>
         鍵盤で音を選択するとコードが表示されます
+        <span className="block text-xs mt-1" style={{ opacity: 0.6 }}>Select notes on the keyboard to see matching chords</span>
       </p>
     );
   }
@@ -93,12 +94,12 @@ export default function ChordGrid({ chords }: ChordGridProps) {
       </table>
 
       {/* Legend */}
-      <div className="mt-4 flex flex-wrap gap-3 text-[10px] text-[var(--text-muted)]">
-        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded" style={{background:"#ff0000"}}/>整った響き（コードトーン）</span>
-        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded" style={{background:"#111",border:"1px solid #444"}}/>複雑な響き（テンション）</span>
-        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded" style={{background:"#0000ff"}}/>緊張感あり（オルタード）</span>
-        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded" style={{background:"#00ff00"}}/>注意（ケアノート含む）</span>
-        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded border border-gray-600"/>不協和（非推奨）</span>
+      <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[10px]" style={{ color: "var(--text-muted)" }}>
+        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded flex-shrink-0" style={{background:"#ff0000"}}/>整った響き / Chord tones</span>
+        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded flex-shrink-0" style={{background:"#111",border:"1px solid #444"}}/>複雑な響き / Tensions only</span>
+        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded flex-shrink-0" style={{background:"#0000ff"}}/>緊張感あり / Altered tensions</span>
+        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded flex-shrink-0" style={{background:"#00ff00"}}/>注意 / Use with care</span>
+        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded flex-shrink-0 border border-gray-600"/>不協和 / Avoid</span>
       </div>
     </div>
   );

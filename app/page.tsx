@@ -33,6 +33,9 @@ export default function Home() {
         </h1>
         <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
           鍵盤で音を選ぶと、マッチするコードをリアルタイムで表示します
+          <span className="ml-2" style={{ color: "var(--text-muted)", opacity: 0.6 }}>
+            — Select notes on the keyboard to instantly find matching chords
+          </span>
         </p>
       </header>
 
@@ -42,8 +45,8 @@ export default function Home() {
         <div className="mt-4 flex items-center justify-between">
           <p className="text-sm" style={{ color: "var(--text-muted)" }}>
             {selected.size === 0
-              ? "音を選択してください"
-              : `選択中: ${notes.join(", ")}`}
+              ? <>音を選択してください <span style={{opacity:0.5}}>/ Select notes</span></>
+              : <>選択中 / Selected: <strong>{notes.join(", ")}</strong></>}
           </p>
           <div className="flex items-center gap-3">
             {selected.size > 0 && (
@@ -56,7 +59,7 @@ export default function Home() {
                   border: `1px solid ${playing ? "#ff6b6b44" : "#6bff6b44"}`,
                 }}
               >
-                {playing ? "■ アルペジオ停止" : "▶ アルペジオ再生"}
+                {playing ? "■ Stop arpeggio　停止" : "▶ Play arpeggio　再生"}
               </button>
             )}
             {selected.size > 0 && (
@@ -65,7 +68,7 @@ export default function Home() {
                 className="text-xs underline transition-colors"
                 style={{ color: "var(--text-muted)" }}
               >
-                クリア
+                クリア / Clear
               </button>
             )}
           </div>
@@ -78,6 +81,7 @@ export default function Home() {
 
       <footer className="mt-8 text-center" style={{ fontSize: 10, color: "var(--text-muted)" }}>
         コードネームをクリックすると音が出ます &nbsp;·&nbsp; 音量にご注意ください
+        <span className="block mt-0.5" style={{ opacity: 0.6 }}>Click a chord name to hear it &nbsp;·&nbsp; Please watch your volume</span>
       </footer>
     </main>
   );
