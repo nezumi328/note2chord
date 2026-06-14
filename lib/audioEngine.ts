@@ -5,6 +5,19 @@ class AudioEngine {
   private buffers = new Map<string, AudioBuffer>();
   private loading = new Map<string, Promise<AudioBuffer>>();
 
+  constructor() {
+    if (typeof window !== "undefined") {
+      // iOS: AudioContext が suspended になった後、ユーザー操作で resume する
+      const resume = () => { this.ctx?.resume(); };
+      document.addEventListener("touchstart", resume, { passive: true });
+      document.addEventListener("click", resume, { passive: true });
+      // バックグラウンドから復帰したときも resume
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") this.ctx?.resume();
+      });
+    }
+  }
+
   private async getCtx(): Promise<AudioContext> {
     if (!this.ctx) {
       this.ctx = new AudioContext();
@@ -42,7 +55,6 @@ class AudioEngine {
     source.start();
   }
 
-  // Schedule playback at a precise Web Audio time
   schedulePlay(buffer: AudioBuffer, when: number): void {
     if (!this.ctx) return;
     const source = this.ctx.createBufferSource();

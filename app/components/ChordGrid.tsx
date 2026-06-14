@@ -122,6 +122,20 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
         </tbody>
       </table>
 
+      {/* Badge legend — only shown when key filter is active */}
+      {keyRoot && (
+        <div className="mt-4 text-[10px] leading-relaxed p-2 rounded-lg" style={{ background: "var(--surface2, #eeeef4)", color: "var(--text-muted)" }}>
+          <p className="font-semibold mb-1" style={{ color: "var(--foreground)", opacity: 0.7 }}>バッジの見かた / Badge guide</p>
+          <div className="flex items-start gap-2">
+            <span className="inline-block w-5 h-4 rounded flex-shrink-0 mt-0.5 border-2 border-orange-400" style={{ background: "transparent" }} />
+            <span>
+              オレンジのボーダー＋右上のローマ数字ラベルは、現在選択中のキー ({keyRoot} {keyMode === "major" ? "Major" : "Natural Minor"}) における<strong>ダイアトニックコード</strong>を示します。<br />
+              Orange border with Roman numeral (top-right) marks <strong>diatonic chords</strong> in the current key. Red cells use a yellow label for visibility.
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Legend */}
       <div className="mt-5 text-[10px] leading-relaxed" style={{ color: "var(--text-muted)" }}>
         <p className="mb-2 font-semibold text-[11px]" style={{ color: "var(--foreground)", opacity: 0.7 }}>色の見かた / How to read the colors</p>

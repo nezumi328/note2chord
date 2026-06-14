@@ -15,6 +15,7 @@ export function useArpeggio(notes: NoteName[]) {
   const indexRef = useRef(0);
   const nextTimeRef = useRef(0);
   const tickerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const userStoppedRef = useRef(false);
 
   notesRef.current = notes;
 
@@ -48,10 +49,11 @@ export function useArpeggio(notes: NoteName[]) {
       clearInterval(tickerRef.current);
       tickerRef.current = null;
     }
+    userStoppedRef.current = true;
     setPlaying(false);
   }
 
-  // 音が変わったらバッファをロードしてループ再スタート
+  // 音が変わったらバッファをロードする。ユーザーが明示的に停止していなければループ再スタート。
   // cancelled フラグで古い非同期処理の結果を無視し、レースコンディションを防ぐ
   useEffect(() => {
     if (notes.length === 0) {
@@ -65,7 +67,7 @@ export function useArpeggio(notes: NoteName[]) {
     ).then(bufs => {
       if (cancelled) return;
       buffersRef.current = bufs;
-      startScheduler();
+      if (!userStoppedRef.current) startScheduler();
     });
 
     return () => { cancelled = true; };
@@ -77,6 +79,7 @@ export function useArpeggio(notes: NoteName[]) {
   // 手動でstart/stopするときはバッファが既にキャッシュ済みなので即座に開始できる
   function start() {
     if (buffersRef.current.length === 0) return;
+    userStoppedRef.current = false;
     startScheduler();
   }
 
