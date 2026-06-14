@@ -46,7 +46,7 @@ export default function Home() {
           <p className="text-sm" style={{ color: "var(--text-muted)" }}>
             {selected.size === 0
               ? <>音を選択してください <span style={{opacity:0.5}}>/ Select notes</span></>
-              : <>選択中 / Selected: <strong>{notes.join(", ")}</strong></>}
+              : <>Selected: <strong>{notes.join(", ")}</strong></>}
           </p>
           <div className="flex items-center gap-3">
             {selected.size > 0 && (
@@ -68,7 +68,7 @@ export default function Home() {
                 className="text-xs underline transition-colors"
                 style={{ color: "var(--text-muted)" }}
               >
-                クリア / Clear
+                Clear
               </button>
             )}
           </div>

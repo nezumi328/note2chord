@@ -94,12 +94,41 @@ export default function ChordGrid({ chords }: ChordGridProps) {
       </table>
 
       {/* Legend */}
-      <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[10px]" style={{ color: "var(--text-muted)" }}>
-        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded flex-shrink-0" style={{background:"#ff0000"}}/>整った響き / Chord tones</span>
-        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded flex-shrink-0" style={{background:"#111",border:"1px solid #444"}}/>複雑な響き / Tensions only</span>
-        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded flex-shrink-0" style={{background:"#0000ff"}}/>緊張感あり / Altered tensions</span>
-        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded flex-shrink-0" style={{background:"#00ff00"}}/>注意 / Use with care</span>
-        <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded flex-shrink-0 border border-gray-600"/>不協和 / Avoid</span>
+      <div className="mt-5 text-[10px] leading-relaxed" style={{ color: "var(--text-muted)" }}>
+        <p className="mb-2 font-semibold text-[11px]" style={{ color: "var(--foreground)", opacity: 0.7 }}>色の見かた / How to read the colors</p>
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-start gap-2">
+            <span className="inline-block w-3 h-3 rounded flex-shrink-0 mt-0.5" style={{background:"#ff0000"}}/>
+            <span>赤 Red — 選択した音がすべてコードトーン。コードの響きに完全にマッチ。<br/>All selected notes are chord tones — a perfect fit.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <span className="inline-block w-3 h-3 rounded flex-shrink-0 mt-0.5" style={{background:"#111",border:"1px solid #444"}}/>
+            <span>黒 Black — コードトーンを含まず、ナチュラルテンションのみ。複雑な響きになる。<br/>No chord tones — natural tensions only; a more complex, ambiguous sound.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <span className="inline-block w-3 h-3 rounded flex-shrink-0 mt-0.5" style={{background:"#0000ff"}}/>
+            <span>青 Blue — 選択した音がすべてオルタードテンション。緊張感・不安定感のある響き。<br/>All selected notes are altered tensions — a tense, unstable sound.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <span className="flex-shrink-0 mt-0.5" style={{display:"inline-flex", gap:2}}>
+              <span className="inline-block w-3 h-3 rounded" style={{background:"#aa0000"}}/>
+              <span className="inline-block w-3 h-3 rounded" style={{background:"#8800aa"}}/>
+              <span className="inline-block w-3 h-3 rounded" style={{background:"#0044ff"}}/>
+            </span>
+            <span>赤〜紫〜青のグラデーション Red–Purple–Blue gradient — コードトーンとオルタードテンションが混在するとき、その比率に応じて色が変化。赤に近いほどコードトーンの割合が高く安定、青に近いほどオルタードが多く緊張感が増す。<br/>When chord tones and altered tensions are mixed, the color blends between red and blue according to their ratio — redder means more stable, bluer means more tension.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <span className="flex-shrink-0 mt-0.5" style={{display:"inline-flex", gap:2}}>
+              <span className="inline-block w-3 h-3 rounded" style={{background:"#00ff00"}}/>
+              <span className="inline-block w-3 h-3 rounded" style={{background:"#88ff88"}}/>
+            </span>
+            <span>緑 Green — ケアノート（コードの役割や色彩を変えてしまう音）を含む。コードトーンの割合が高いほど濃い緑、低いほど薄い緑。使い方に注意が必要。<br/>Contains a "care note" — a note that alters the chord's character. Deeper green = more chord tones alongside; lighter green = use with extra care.</span>
+          </div>
+          <div className="flex items-start gap-2">
+            <span className="inline-block w-3 h-3 rounded flex-shrink-0 mt-0.5 border border-gray-600"/>
+            <span>白 White（非表示 hidden) — アヴォイドノートを含む、または禁止テンションの組み合わせ。不協和になるため非推奨。<br/>Contains an avoid note or a forbidden tension combination — these chords clash and are not recommended.</span>
+          </div>
+        </div>
       </div>
     </div>
   );
