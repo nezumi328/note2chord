@@ -59,7 +59,7 @@ export default function Home() {
                   border: `1px solid ${playing ? "#cc222244" : "#22772244"}`,
                 }}
               >
-                {playing ? "■ Stop arpeggio　停止" : "▶ Play arpeggio　再生"}
+                {playing ? "■ Stop" : "▶ Loop notes"}
               </button>
             )}
             {selected.size > 0 && (
