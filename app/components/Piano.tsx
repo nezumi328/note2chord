@@ -11,11 +11,6 @@ const BLACK_KEYS: { note: NoteName; offset: number }[] = [
   { note: "Bb", offset: 6 },
 ];
 
-function playNote(note: NoteName) {
-  const audio = new Audio(`/audio/${note}4.mp3`);
-  audio.play().catch(() => {});
-}
-
 interface PianoProps {
   selected: Set<NoteName>;
   onToggle: (note: NoteName) => void;
@@ -23,7 +18,6 @@ interface PianoProps {
 
 export default function Piano({ selected, onToggle }: PianoProps) {
   const handleKey = (note: NoteName) => {
-    playNote(note);
     onToggle(note);
   };
 

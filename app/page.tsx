@@ -4,9 +4,12 @@ import { useState, useMemo } from "react";
 import Piano from "./components/Piano";
 import ChordGrid from "./components/ChordGrid";
 import { suggestChords, NoteName } from "@/lib/chordEngine";
+import { useArpeggio } from "./hooks/useArpeggio";
 
 export default function Home() {
   const [selected, setSelected] = useState<Set<NoteName>>(new Set());
+  const notes = useMemo(() => [...selected] as NoteName[], [selected]);
+  const { playing, stop, start } = useArpeggio(notes);
 
   const toggle = (note: NoteName) => {
     setSelected(prev => {
@@ -18,8 +21,8 @@ export default function Home() {
   };
 
   const chords = useMemo(
-    () => suggestChords([...selected] as NoteName[]),
-    [selected]
+    () => suggestChords(notes),
+    [notes]
   );
 
   return (
@@ -40,17 +43,32 @@ export default function Home() {
           <p className="text-sm" style={{ color: "var(--text-muted)" }}>
             {selected.size === 0
               ? "音を選択してください"
-              : `選択中: ${[...selected].join(", ")}`}
+              : `選択中: ${notes.join(", ")}`}
           </p>
-          {selected.size > 0 && (
-            <button
-              onClick={() => setSelected(new Set())}
-              className="text-xs underline transition-colors"
-              style={{ color: "var(--text-muted)" }}
-            >
-              クリア
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            {selected.size > 0 && (
+              <button
+                onClick={playing ? stop : start}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                style={{
+                  background: playing ? "#3a1a1a" : "#1a2a1a",
+                  color: playing ? "#ff6b6b" : "#6bff6b",
+                  border: `1px solid ${playing ? "#ff6b6b44" : "#6bff6b44"}`,
+                }}
+              >
+                {playing ? "■ アルペジオ停止" : "▶ アルペジオ再生"}
+              </button>
+            )}
+            {selected.size > 0 && (
+              <button
+                onClick={() => setSelected(new Set())}
+                className="text-xs underline transition-colors"
+                style={{ color: "var(--text-muted)" }}
+              >
+                クリア
+              </button>
+            )}
+          </div>
         </div>
       </section>
 
