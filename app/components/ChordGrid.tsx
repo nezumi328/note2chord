@@ -74,21 +74,26 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
                   <td key={root} className="p-0.5">
                     <div
                       className={`
-                        group relative cursor-pointer rounded text-center px-0.5 transition-opacity
+                        group relative cursor-pointer rounded text-center px-0.5 py-1 transition-opacity
                         ${isWhite ? "opacity-10 hover:opacity-30" : "hover:opacity-80"}
-                        ${diatonicLabel ? "py-0.5" : "py-1"}
                       `}
-                      style={{ backgroundColor: `#${chord.color}` }}
+                      style={{
+                        backgroundColor: `#${chord.color}`,
+                        // 案B: ダイアトニックに色付きボーダー
+                        outline: diatonicLabel ? "2px solid #f97316" : "none",
+                        outlineOffset: "-1px",
+                      }}
                       onClick={() => playChord(chord.audioFile)}
                       title={chord.tensions.join(", ")}
                     >
+                      {/* 案B: 右上に小さなローマ数字ラベル */}
                       {diatonicLabel && (
-                        <div
-                          className="text-[7px] leading-none mb-0.5 font-bold tracking-tight"
-                          style={{ color: textColor, opacity: 0.75 }}
+                        <span
+                          className="absolute top-0.5 right-0.5 text-[9px] font-bold leading-none"
+                          style={{ color: "#f97316" }}
                         >
                           {diatonicLabel}
-                        </div>
+                        </span>
                       )}
                       <span className="font-bold text-[11px] leading-none" style={{ color: textColor }}>
                         {chord.displayName}
