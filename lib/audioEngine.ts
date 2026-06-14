@@ -20,6 +20,8 @@ class AudioEngine {
 
   private async getCtx(): Promise<AudioContext> {
     if (!this.ctx) {
+      // SSR 環境では AudioContext が存在しないため、クライアント初回呼び出し時のみ生成
+      if (typeof window === "undefined") throw new Error("AudioContext unavailable");
       this.ctx = new AudioContext();
     }
     if (this.ctx.state === "suspended") {

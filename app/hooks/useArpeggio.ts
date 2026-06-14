@@ -33,9 +33,9 @@ export function useArpeggio(notes: NoteName[]) {
     }
   }
 
-  function startScheduler() {
+  function startScheduler(resetIndex = true) {
     if (tickerRef.current) clearInterval(tickerRef.current);
-    indexRef.current = 0;
+    if (resetIndex) indexRef.current = 0;
     audioEngine.ensureStarted().then(() => {
       nextTimeRef.current = audioEngine.currentTime + 0.05;
       schedule();
@@ -44,6 +44,7 @@ export function useArpeggio(notes: NoteName[]) {
     });
   }
 
+  // ユーザーが明示的に停止。次に notes が変わっても自動再開しない。
   function stop() {
     if (tickerRef.current) {
       clearInterval(tickerRef.current);
@@ -53,21 +54,32 @@ export function useArpeggio(notes: NoteName[]) {
     setPlaying(false);
   }
 
-  // 音が変わったらバッファをロードする。ユーザーが明示的に停止していなければループ再スタート。
-  // cancelled フラグで古い非同期処理の結果を無視し、レースコンディションを防ぐ
+  // notes が空になったときの自動停止。userStoppedRef は変えない。
+  function stopByEmpty() {
+    if (tickerRef.current) {
+      clearInterval(tickerRef.current);
+      tickerRef.current = null;
+    }
+    setPlaying(false);
+  }
+
   useEffect(() => {
     if (notes.length === 0) {
-      stop();
+      stopByEmpty();
       return;
     }
     let cancelled = false;
+    const wasPlaying = !!tickerRef.current; // バッファ更新前の再生状態を保持
 
     Promise.all(
       notes.map(n => audioEngine.load(`/audio/${n}4.mp3`).catch(() => null))
     ).then(bufs => {
       if (cancelled) return;
       buffersRef.current = bufs;
-      if (!userStoppedRef.current) startScheduler();
+      if (!userStoppedRef.current) {
+        // 再生中なら index をリセットせず継続、停止中なら新規スタート
+        startScheduler(!wasPlaying);
+      }
     });
 
     return () => { cancelled = true; };
@@ -76,11 +88,10 @@ export function useArpeggio(notes: NoteName[]) {
 
   useEffect(() => () => stop(), []);
 
-  // 手動でstart/stopするときはバッファが既にキャッシュ済みなので即座に開始できる
   function start() {
     if (buffersRef.current.length === 0) return;
     userStoppedRef.current = false;
-    startScheduler();
+    startScheduler(true);
   }
 
   return { playing, stop, start };

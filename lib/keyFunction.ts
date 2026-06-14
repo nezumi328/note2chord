@@ -15,7 +15,7 @@ const MAJOR_DEGREES: DiatonicDegree[] = [
   { semitones: 5,  suffixes: ["M","M7","6"],      label: "IV" },
   { semitones: 7,  suffixes: ["M","7","6","7sus4"], label: "V" },
   { semitones: 9,  suffixes: ["m","m7","m6"],     label: "VIm" },
-  { semitones: 11, suffixes: ["m7-5"],            label: "VII°" },
+  { semitones: 11, suffixes: ["m7-5"],            label: "VIIø" },
 ];
 
 // ナチュラルマイナースケール
