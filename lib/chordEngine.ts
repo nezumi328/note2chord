@@ -41,8 +41,10 @@ function getTensionMap(suffix: string): Record<number, string> {
   const base: Record<number, string> = {
     0: "Root", 1: "b9", 2: "9", 4: "3", 7: "P5", 10: "7", 11: "M7",
   };
-  if (["7","7-5","augM7"].includes(suffix)) {
+  if (["7","7-5"].includes(suffix)) {
     return { ...base, 3:"#9", 5:"11", 6:"#11", 8:"b13", 9:"13" };
+  } else if (suffix === "augM7") {
+    return { ...base, 3:"#9", 5:"11", 6:"#11", 8:"#5", 9:"13", 10:"b7", 11:"M7" };
   } else if (["M","M7"].includes(suffix)) {
     return { ...base, 3:"#9", 5:"11", 6:"#11", 8:"b13", 9:"13" };
   } else if (suffix === "aug") {
