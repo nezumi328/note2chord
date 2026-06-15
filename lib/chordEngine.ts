@@ -21,7 +21,7 @@ const NOTE_NO: Record<NoteName, number> = {C:0,Db:1,D:2,Eb:3,E:4,F:5,Gb:6,G:7,Ab
 // data.csv をTypeScriptに直接移植
 const CHORD_TYPES: ChordType[] = [
   { suffix: "M",      roles: ["c","o","i","o","c","k","i","c","o","i","i","i"] },
-  { suffix: "M7",     roles: ["c","o","i","o","c","o","i","c","o","i","o","c"] },
+  { suffix: "M7",     roles: ["c","o","i","o","c","k","i","c","o","i","o","c"] },
   { suffix: "7",      roles: ["c","t","i","t","c","k","t","c","t","i","c","o"] },
   { suffix: "6",      roles: ["c","o","i","o","c","k","i","c","o","c","o","i"] },
   { suffix: "m",      roles: ["c","o","i","c","o","i","i","c","k","i","i","i"] },
