@@ -30,8 +30,9 @@ const CHORD_TYPES: ChordType[] = [
   { suffix: "m6",     roles: ["c","o","i","c","o","i","i","c","o","c","o","i"] },
   { suffix: "m7-5",   roles: ["c","k","i","c","o","i","c","o","k","o","c","o"] },
   { suffix: "dim",    roles: ["c","o","i","c","o","i","c","o","i","c","o","i"] },
-  { suffix: "aug",    roles: ["c","t","i","t","c","o","t","o","c","o","i","o"] },
-  { suffix: "augM7",  roles: ["c","o","i","o","c","o","i","o","c","i","o","c"] },
+  { suffix: "aug",    roles: ["c","t","i","t","c","o","t","o","c","o","i","i"] },
+  { suffix: "aug7",   roles: ["c","t","i","t","c","o","t","o","c","o","c","o"] },
+  { suffix: "augM7",  roles: ["c","t","i","t","c","o","t","o","c","i","o","c"] },
   { suffix: "7-5",    roles: ["c","t","i","t","c","o","c","o","t","i","c","o"] },
   { suffix: "7sus4",  roles: ["c","t","i","t","o","c","o","c","t","i","c","o"] },
 ];
@@ -45,6 +46,8 @@ function getTensionMap(suffix: string): Record<number, string> {
   } else if (["M","M7"].includes(suffix)) {
     return { ...base, 3:"#9", 5:"11", 6:"#11", 8:"b13", 9:"13" };
   } else if (suffix === "aug") {
+    return { ...base, 3:"#9", 5:"11", 6:"#11", 8:"#5", 9:"13", 10:"b7", 11:"M7" };
+  } else if (suffix === "aug7") {
     return { ...base, 3:"#9", 5:"11", 6:"#11", 8:"#5", 9:"13" };
   } else if (suffix === "6") {
     return { ...base, 3:"#9", 5:"11", 6:"#11", 8:"b13", 9:"M6" };
@@ -66,7 +69,7 @@ function toAudioFilename(root: NoteName, suffix: string): string {
   const suffixMap: Record<string, string> = {
     "M": "", "M7": "M7", "7": "7", "6": "6",
     "m": "min", "mM7": "minM7", "m7": "min7", "m6": "min6", "m7-5": "min7-5",
-    "dim": "dim", "aug": "aug", "augM7": "augM7", "7-5": "7-5", "7sus4": "7sus4",
+    "dim": "dim", "aug": "aug", "aug7": "aug7", "augM7": "augM7", "7-5": "7-5", "7sus4": "7sus4",
   };
   return `audio/${root}${suffixMap[suffix] ?? suffix}.mp3`;
 }
