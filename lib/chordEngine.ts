@@ -185,7 +185,7 @@ export function suggestChords(selectedNotes: NoteName[]): ChordResult[] {
 
       const color = calcColor(cMatch, iMatch, tMatch, kMatch, oMatch, selectedNotes.length, ct.suffix, ctensions);
 
-      const displaySuffix = ct.suffix === "M" ? "" : ct.suffix;
+      const displaySuffix = ct.suffix === "M" ? "" : ct.suffix === "m7-5" ? "ø" : ct.suffix;
       const displayName = root + displaySuffix;
 
       results.push({

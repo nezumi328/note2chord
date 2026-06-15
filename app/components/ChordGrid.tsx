@@ -60,7 +60,7 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
           {SUFFIX_ORDER.map(suffix => (
             <tr key={suffix}>
               <td className="px-2 py-0.5 text-[var(--text-muted)] text-[10px]">
-                {suffix === "M" ? "maj" : suffix}
+                {suffix === "M" ? "maj" : suffix === "m7-5" ? "ø" : suffix}
               </td>
               {ROOT_ORDER.map(root => {
                 const chord = byRoot[`${root}-${suffix}`];
