@@ -33,7 +33,7 @@ interface ChordGridProps {
   keyMode: Mode;
 }
 
-const SUFFIX_ORDER = ["M","M7","7","6","m","mM7","m7","m6","m7-5","dim","aug","aug7","augM7","7-5","7sus4"];
+const SUFFIX_ORDER = ["M","M7","7","6","m","mM7","m7","m6","m7-5","dim","aug","augM7","aug7","7-5","7sus4"];
 const ROOT_ORDER = ["C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"];
 
 export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridProps) {
