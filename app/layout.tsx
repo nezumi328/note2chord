@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Note2Chord",
+  title: "ChordPrism",
   description: "Real-time chord suggester — select melody notes and instantly find matching chords",
 };
 

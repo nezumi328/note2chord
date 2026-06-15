@@ -33,7 +33,7 @@ export default function Home() {
     <main className="min-h-screen px-4 py-8 max-w-5xl mx-auto">
       <header className="mb-8">
         <h1 className="text-2xl font-bold tracking-tight">
-          Note<span style={{ color: "var(--accent)" }}>2</span>Chord
+          Chord<span style={{ color: "var(--accent)" }}>Prism</span>
         </h1>
         <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>
           鍵盤で音を選ぶと、マッチするコードをリアルタイムで表示します
