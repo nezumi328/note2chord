@@ -101,8 +101,11 @@ function calcColor(
   if (["M","6"].includes(suffix)) {
     if (ctensions.includes("11") && ctensions.includes("#11")) return "ffffff";
   }
-  if (["M","m","aug"].includes(suffix)) {
+  if (["M","m"].includes(suffix)) {
     if (ctensions.includes("7") && ctensions.includes("M7")) return "ffffff";
+  }
+  if (suffix === "aug") {
+    if (ctensions.includes("b7") && ctensions.includes("M7")) return "ffffff";
   }
 
   if (noteCount === 1) {
