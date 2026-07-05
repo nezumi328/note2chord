@@ -32,7 +32,7 @@ const CHORD_TYPES: ChordType[] = [
   { suffix: "dim",    roles: ["c","o","i","c","o","i","c","o","i","c","o","i"] },
   { suffix: "aug",    roles: ["c","t","i","t","c","o","t","o","c","o","i","i"] },
   { suffix: "aug7",   roles: ["c","t","i","t","c","o","t","o","c","o","c","o"] },
-  { suffix: "augM7",  roles: ["c","t","i","t","c","o","t","o","c","i","o","c"] },
+  { suffix: "augM7",  roles: ["c","o","i","o","c","k","i","o","c","i","o","c"] },
   { suffix: "7-5",    roles: ["c","t","i","t","c","o","c","o","t","i","c","o"] },
   { suffix: "7sus4",  roles: ["c","t","i","t","o","c","o","c","t","i","c","o"] },
 ];
