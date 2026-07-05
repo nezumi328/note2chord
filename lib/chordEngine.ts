@@ -89,7 +89,7 @@ function calcColor(
   if (kMatch >= 2) return "ffffff";
 
   // forbidden tension combos
-  if (["7","7-5","augM7"].includes(suffix)) {
+  if (["7","7-5"].includes(suffix)) {
     if (ctensions.includes("#11") && ctensions.includes("b13")) return "ffffff";
     if (
       (ctensions.includes("b9") && ctensions.includes("9")) ||
@@ -160,7 +160,6 @@ export function suggestChords(selectedNotes: NoteName[]): ChordResult[] {
   if (selectedNotes.length === 0) return [];
 
   const results: ChordResult[] = [];
-  const noteNos = selectedNotes.map(n => NOTE_NO[n]);
 
   for (let rootIdx = 0; rootIdx < 12; rootIdx++) {
     const root = NOTE_NAMES[rootIdx];
