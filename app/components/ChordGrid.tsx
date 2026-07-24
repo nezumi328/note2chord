@@ -100,7 +100,7 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
                         {chord.displayName}
                       </span>
                       {chord.tensions.length > 0 && (
-                        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-1
+                        <div className="absolute z-50 top-full left-1/2 -translate-x-1/2 mt-1
                           hidden group-hover:block
                           bg-black/90 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap pointer-events-none">
                           {chord.tensions.join(", ")}
