@@ -85,7 +85,6 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
                         outlineOffset: "-1px",
                       }}
                       onClick={() => playChord(chord.audioFile)}
-                      title={chord.tensions.join(", ")}
                     >
                       {/* 案B: 右上に小さなローマ数字ラベル */}
                       {diatonicLabel && (
@@ -100,9 +99,10 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
                         {chord.displayName}
                       </span>
                       {chord.tensions.length > 0 && (
-                        <div className="absolute z-50 top-full left-1/2 -translate-x-1/2 mt-1
+                        <div className={`absolute z-50 left-1/2 -translate-x-1/2
                           hidden group-hover:block
-                          bg-black/90 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap pointer-events-none">
+                          bg-black/90 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap pointer-events-none
+                          ${suffix === "M" ? "top-full mt-1" : "bottom-full mb-1"}`}>
                           {chord.tensions.join(", ")}
                         </div>
                       )}
