@@ -22,7 +22,8 @@ class AudioEngine {
     if (!this.ctx) {
       // SSR 環境では AudioContext が存在しないため、クライアント初回呼び出し時のみ生成
       if (typeof window === "undefined") throw new Error("AudioContext unavailable");
-      this.ctx = new AudioContext();
+      const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      this.ctx = new AC();
     }
     if (this.ctx.state === "suspended") {
       await this.ctx.resume();
