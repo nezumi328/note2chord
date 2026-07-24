@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useState, useCallback } from "react";
 import { ChordResult, NoteName } from "@/lib/chordEngine";
 import { audioEngine } from "@/lib/audioEngine";
 import { getDiatonicLabel, Mode } from "@/lib/keyFunction";
@@ -37,6 +37,16 @@ const SUFFIX_ORDER = ["M","M7","7","6","m","mM7","m7","m6","m7-5","dim","aug","a
 const ROOT_ORDER = ["C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"];
 
 export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridProps) {
+  const [tooltip, setTooltip] = useState<{ x: number; y: number; text: string } | null>(null);
+
+  const handleMouseEnter = useCallback((e: { currentTarget: Element }, tensions: string[]) => {
+    if (tensions.length === 0) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltip({ x: rect.left + rect.width / 2, y: rect.top - 4, text: tensions.join(", ") });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => setTooltip(null), []);
+
   if (chords.length === 0) {
     return (
       <p className="text-center mt-8" style={{ color: "var(--text-muted)" }}>
@@ -75,16 +85,17 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
                   <td key={root} className="p-0.5">
                     <div
                       className={`
-                        group relative cursor-pointer rounded text-center px-0.5 py-1 transition-opacity
+                        relative cursor-pointer rounded text-center px-0.5 py-1 transition-opacity
                         ${isWhite ? "opacity-10 hover:opacity-30" : "hover:opacity-80"}
                       `}
                       style={{
                         backgroundColor: `#${chord.color}`,
-                        // 案B: ダイアトニックに色付きボーダー
                         outline: badgeColor ? `2px solid ${badgeColor}` : "none",
                         outlineOffset: "-1px",
                       }}
                       onClick={() => playChord(chord.audioFile)}
+                      onMouseEnter={(e) => handleMouseEnter(e, chord.tensions)}
+                      onMouseLeave={handleMouseLeave}
                     >
                       {/* 案B: 右上に小さなローマ数字ラベル */}
                       {diatonicLabel && (
@@ -98,14 +109,6 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
                       <span className="font-bold text-[11px] leading-none" style={{ color: textColor }}>
                         {chord.displayName}
                       </span>
-                      {chord.tensions.length > 0 && (
-                        <div className={`absolute z-50 left-1/2 -translate-x-1/2
-                          hidden group-hover:block
-                          bg-black/90 text-white text-[10px] rounded px-2 py-1 whitespace-nowrap pointer-events-none
-                          ${suffix === "M" ? "top-full mt-1" : "bottom-full mb-1"}`}>
-                          {chord.tensions.join(", ")}
-                        </div>
-                      )}
                     </div>
                   </td>
                 );
@@ -152,6 +155,24 @@ export default memo(function ChordGrid({ chords, keyRoot, keyMode }: ChordGridPr
           </div>
         </div>
       </div>
+      {tooltip && (
+        <div style={{
+          position: "fixed",
+          left: tooltip.x,
+          top: tooltip.y,
+          transform: "translate(-50%, -100%) translateY(-4px)",
+          zIndex: 9999,
+          background: "rgba(0,0,0,0.88)",
+          color: "#fff",
+          fontSize: "10px",
+          borderRadius: "4px",
+          padding: "2px 8px",
+          whiteSpace: "nowrap",
+          pointerEvents: "none",
+        }}>
+          {tooltip.text}
+        </div>
+      )}
     </div>
   );
 });
